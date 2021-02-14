@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
-
+import aiosqlite
 from conf import dp, bot
 
 @dp.message_handler(is_chat_admin=True, commands=["start"])
