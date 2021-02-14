@@ -21,7 +21,7 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 async def cmd_start(message: types.Message):
     conn = await aiosqlite.connect('mybd.db')
     c = await conn.cursor()
-    await c.execute('''CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, link text, date text)''')
+    await c.execute('''CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, link text, date text, status int)''')
     await conn.commit()
     await conn.close()
     await message.reply("База данных создана")
