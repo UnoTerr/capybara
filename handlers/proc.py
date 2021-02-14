@@ -6,7 +6,7 @@ import aiosqlite
 import asyncio
 from conf import dp, bot, chatId
 
-from datetime import date
+from datetime import datetime
 
 cb_del = CallbackData('del', 'action', 'id')
 
@@ -34,13 +34,14 @@ async def callback_delete(query: types.CallbackQuery, callback_data: dict):
        await conn.close()
 
 async def alert():
-    today = date.today()
-    d1 = today.strftime("%d.%m.%Y")
+    today = datetime.today()
+    d0 = today.strftime("%d.%m.%Y")
+    d1 = datetime.strptime(d0, '%d.%m.%Y')
     msg = "До окончания прочтения книги "
     conn = await aiosqlite.connect('mybd.db')
     async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp'") as cursor:
         async for i in cursor:
-            d2 = i[1]
+            d2 = datetime.strptime(i[1], '%d.%m.%Y')
             dif = abs((d2 - d1).days)
             msg += "<b>{}</b> осталось {} дней".format(i[2], dif)
             if dif == 10 or dif == 5 or dif == 1:
