@@ -38,8 +38,8 @@ async def new_book_4(message: types.Message, state: FSMContext):
     date_n = message.text.lower()
     conn = await aiosqlite.connect('mybd.db')
     c = await conn.cursor()
-    await c.execute("UPDATE books SET name = ?, link = ?, date = ? WHERE status = 'is_being_created'",
-       ([book_data['name_n'], book_data['link_n'], date_n]))
+    await c.execute("UPDATE books SET name = ?, link = ?, date = ?, status = ? WHERE status = 'is_being_created'",
+       ([book_data['name_n'], book_data['link_n'], date_n, 'disp']))
     await conn.commit()
     await conn.close()
     await message.answer("Книга добавлена!")
