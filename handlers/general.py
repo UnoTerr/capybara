@@ -1,10 +1,18 @@
 from aiogram import types
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters import Text
+
 from conf import dp, bot
 
-@dp.message_handler(commands=["start"])
+@dp.message_handler(is_chat_admin=True, commands=["start"])
 async def cmd_start(message: types.Message):
     await message.reply("Привет! Я - Капабара!")
 
-@dp.message_handler()
-async def echo(message: types.Message):
-    await message.answer(message.text)
+# @dp.message_handler(is_chat_admin=True)
+# async def echo(message: types.Message):
+#     await message.answer(message.text)
+
+@dp.message_handler(Text(equals="отмена", ignore_case=True), state="*", is_chat_admin=True)
+async def cmd_cancel(message: types.Message, state: FSMContext):
+    await state.finish()
+    await message.answer("Действие отменено")
