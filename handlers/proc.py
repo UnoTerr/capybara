@@ -14,7 +14,7 @@ async def cmd_cancel(message: types.Message):
     conn = await aiosqlite.connect('mybd.db')
     async with conn.execute("SELECT id, name, link, date FROM books WHERE status = 'disp'") as cursor:
         async for i in cursor:
-            txt = '<b>{}</b> - {} - {}\n'.format(i[2], i[3], i[4])
+            txt = '<b>{}</b> - {} - {}\n'.format(i[1], i[2], i[3])
             in_kb = types.InlineKeyboardMarkup()
             in_kb.add(types.InlineKeyboardButton('Удалить', callback_data = cb_del.new(action = 'delete', id = i[0])))
             await message.answer(txt, parse_mode='HTML', reply_markup = in_kb)
