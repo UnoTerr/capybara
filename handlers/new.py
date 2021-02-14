@@ -23,20 +23,20 @@ async def new_book_1(message: types.Message):
 
 @dp.message_handler(state = New.book_name, content_types=types.ContentTypes.TEXT, is_chat_admin=True)
 async def new_book_2(message: types.Message, state: FSMContext):
-    await state.update_data(name_n = message.text.lower())
+    await state.update_data(name_n = message.text)
     await message.answer("Давай ссылку: ")
     await New.book_link.set()
 
 @dp.message_handler(state = New.book_link, content_types=types.ContentTypes.TEXT, is_chat_admin=True)
 async def new_book_3(message: types.Message, state: FSMContext):
-    await state.update_data(link_n = message.text.lower())
+    await state.update_data(link_n = message.text)
     await New.next()
     await message.answer("Говори дату в формате ДД.ММ.ГГГГ: ")
 
 @dp.message_handler(state = New.book_date, content_types=types.ContentTypes.TEXT, is_chat_admin=True)
 async def new_book_4(message: types.Message, state: FSMContext):
     book_data = await state.get_data()
-    date_n = message.text.lower()
+    date_n = message.text
     conn = await aiosqlite.connect('mybd.db')
     c = await conn.cursor()
     await c.execute("UPDATE books SET name = ?, link = ?, date = ?, status = ? WHERE status = 'is_being_created'",

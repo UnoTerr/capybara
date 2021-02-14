@@ -17,7 +17,7 @@ async def main_l():
         except KeyboardInterrupt:
             print("W: interrupt received, stopping ^` ")
             loop=False
-        await asyncio.sleep(10)
+        await asyncio.sleep(28800)
 
 
 

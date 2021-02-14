@@ -33,6 +33,19 @@ async def callback_delete(query: types.CallbackQuery, callback_data: dict):
        await conn.commit()
        await conn.close()
 
+@dp.message_handler(Text(equals="оставшееся время", ignore_case=True))
+async def cmd_time(message: types.Message):
+    today = datetime.today()
+    d0 = today.strftime("%d.%m.%Y")
+    d1 = datetime.strptime(d0, '%d.%m.%Y')
+    conn = await aiosqlite.connect('mybd.db')
+    async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp'") as cursor:
+        async for i in cursor:
+            d2 = datetime.strptime(i[1], '%d.%m.%Y')
+            dif = abs((d2 - d1).days)
+            msg = """До окончания прочтения книги '<b>{}</b>' осталось {} дней""".format(i[2], dif)
+            await bot.send_message(chatId, msg, parse_mode='HTML')
+
 async def alert():
     today = datetime.today()
     d0 = today.strftime("%d.%m.%Y")
@@ -44,6 +57,4 @@ async def alert():
             dif = abs((d2 - d1).days)
             msg = "До окончания прочтения книги <b>{}</b> осталось {} дней".format(i[2], dif)
             if dif == 10 or dif == 5 or dif == 1:
-                await bot.send_message(chatId, msg, parse_mode='HTML')
-            else:
                 await bot.send_message(chatId, msg, parse_mode='HTML')
