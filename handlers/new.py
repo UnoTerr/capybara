@@ -10,7 +10,7 @@ class New(StatesGroup):
     book_link = State()
     book_date = State()
 
-@dp.message_handler(lambda message: message.text == "Новый товар", state="*")
+@dp.message_handler(lambda message: message.text == "Новая книга", state="*")
 async def new_book_1(message: types.Message):
     conn = await aiosqlite.connect('mybd.db')
     c = await conn.cursor()
