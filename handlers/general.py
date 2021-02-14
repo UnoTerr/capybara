@@ -16,3 +16,8 @@ async def cmd_start(message: types.Message):
 async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Действие отменено")
+
+@dp.message_handler(commands='create_db', is_chat_admin=True)
+async def cmd_start(message: types.Message):
+    await db.exec_db('''CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, link text, date text)''')
+    await message.reply("База данных создана")
