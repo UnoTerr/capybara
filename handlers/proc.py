@@ -4,13 +4,14 @@ from aiogram.utils.callback_data import CallbackData
 
 import aiosqlite
 import asyncio
-from conf import dp, bot
+from conf import dp, bot, chatId
+
+from datetime import date
 
 cb_del = CallbackData('del', 'action', 'id')
 
 @dp.message_handler(Text(equals="покажи книги", ignore_case=True))
 async def cmd_cancel(message: types.Message):
-    chatId = message.chat.id
     conn = await aiosqlite.connect('mybd.db')
     async with conn.execute("SELECT id, name, link, date FROM books WHERE status = 'disp'") as cursor:
         async for i in cursor:
@@ -28,6 +29,21 @@ async def callback_delete(query: types.CallbackQuery, callback_data: dict):
        conn = await aiosqlite.connect('mybd.db')
        c = await conn.cursor()
        await c.execute("DELETE FROM books WHERE id = ?", [id])
-       await bot.send_message('-1001161219382', 'Книга удалена') 
+       await bot.send_message(chatId, 'Книга удалена') 
        await conn.commit()
        await conn.close()
+
+async def alert():
+    today = date.today()
+    d1 = today.strftime("%d.%m.%Y")
+    msg = "До окончания прочтения книги "
+    conn = await aiosqlite.connect('mybd.db')
+    async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp'") as cursor:
+        async for i in cursor:
+            d2 = i[1]
+            dif = abs((d2 - d1).days)
+            msg += "<b>{}</b> осталось {} дней".format(i[2], dif)
+            if dif == 10 or dif == 5 or dif == 1:
+                await bot.send_message(chatId, msg, parse_mode='HTML')
+            else:
+                await bot.send_message(chatId, msg, parse_mode='HTML')
