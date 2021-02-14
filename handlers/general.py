@@ -13,4 +13,5 @@ async def echo(message: types.Message):
 
 async def inputRead():
     input_r = input() 
+    print(input_r)
     await bot.send_message(chatId, input_r)
