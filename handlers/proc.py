@@ -6,7 +6,7 @@ import aiosqlite
 import asyncio
 from conf import dp, bot
 
-cb_del = CallbackData('del', 'name', 'action', 'id')
+cb_del = CallbackData('del', 'action', 'id')
 
 @dp.message_handler(Text(equals="покажи книги", ignore_case=True))
 async def cmd_cancel(message: types.Message):
