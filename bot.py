@@ -19,8 +19,6 @@ async def main_l():
             loop=False
         await asyncio.sleep(28800)
 
-
-
 loop = asyncio.get_event_loop()
 async def on_startup(_):
         loop.create_task(main_l())
