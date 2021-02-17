@@ -33,3 +33,12 @@ async def prop_show(message: types.Message):
     await message.answer(txt)
     await conn.commit()
     await conn.close()
+
+@dp.message_handler(Text(equals='Очистить предложку', ignore_case=True), is_chat_admin=True)
+async def prop_clear(message: types.Message):
+    conn = await aiosqlite.connect('prop.db')
+    c = await conn.cursor()
+    await c.execute("DELETE FROM books ")
+    await message.answer('Предложка очищена') 
+    await conn.commit()
+    await conn.close()
