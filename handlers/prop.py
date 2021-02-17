@@ -6,7 +6,6 @@ from conf import dp, bot
 import re
 
 import aiosqlite
-#import asyncio
 
 @dp.message_handler(Text(startswith='Предложить книгу', ignore_case=True))
 async def prop_cmd(message: types.Message):
@@ -22,14 +21,11 @@ async def prop_cmd(message: types.Message):
 
 @dp.message_handler(Text(equals='Посмотреть предложку', ignore_case=True))
 async def prop_show(message: types.Message):
-#    chatId = message.chat.id
     txt = ''
     conn = await aiosqlite.connect('prop.db')
     async with conn.execute("SELECT id, name FROM prop") as cursor:
         async for i in cursor:
             txt += '{}\n'.format(i[1])
-
-           # await asyncio.sleep(0.2)
     await message.answer(txt)
     await conn.commit()
     await conn.close()
