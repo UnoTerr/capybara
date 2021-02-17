@@ -24,4 +24,13 @@ async def cmd_start(message: types.Message):
     await c.execute('''CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, link text, date text, status int, wiki text)''')
     await conn.commit()
     await conn.close()
-    await message.reply("База данных создана")
+    await message.reply("База книг данных создана")
+
+@dp.message_handler(commands='prop_db', is_chat_admin=True)
+async def prop_start(message: types.Message):
+    conn = await aiosqlite.connect('prop.db')
+    c = await conn.cursor()
+    await c.execute('''CREATE TABLE prop (id INTEGER PRIMARY KEY AUTOINCREMENT, name text)''')
+    await conn.commit()
+    await conn.close()
+    await message.reply("База предложки данных создана")
