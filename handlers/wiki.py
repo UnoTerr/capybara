@@ -1,11 +1,11 @@
 from aiogram import types
-import wikipedia
-
-from conf import dp, bot
 from aiogram.dispatcher.filters import Text
 
-@dp.message_handler(Text(equals='Найти на вики', ignore_case=True))
-async def wiki(message: types.Message):
+import wikipedia
+from conf import dp, bot
+
+@dp.message_handler(Text(startswith='Найти на вики', ignore_case=True))
+async def cmd_wiki(message: types.Message):
     txt = message.text.split(' ', 3)[3]
     print(txt)
     await message.reply("Ты чо охуел сам ищи")
