@@ -9,6 +9,7 @@ import aiosqlite
 class New(StatesGroup):
     book_name = State()
     book_link = State()
+    book_wiki = State()
     book_date = State()
 
 @dp.message_handler(Text(equals="новая книга", ignore_case=True), state="*", is_chat_admin=True)
@@ -31,6 +32,12 @@ async def new_book_2(message: types.Message, state: FSMContext):
 async def new_book_3(message: types.Message, state: FSMContext):
     await state.update_data(link_n = message.text)
     await New.next()
+    await message.answer("Название с Википедии: ")
+
+@dp.message_handler(state = New.book_wiki, content_types=types.ContentTypes.TEXT, is_chat_admin=True)
+async def new_book_3(message: types.Message, state: FSMContext):
+    await state.update_data(wiki_n = message.text)
+    await New.next()
     await message.answer("Говори дату в формате ДД.ММ.ГГГГ: ")
 
 @dp.message_handler(state = New.book_date, content_types=types.ContentTypes.TEXT, is_chat_admin=True)
@@ -39,8 +46,8 @@ async def new_book_4(message: types.Message, state: FSMContext):
     date_n = message.text
     conn = await aiosqlite.connect('mybd.db')
     c = await conn.cursor()
-    await c.execute("UPDATE books SET name = ?, link = ?, date = ?, status = ? WHERE status = 'is_being_created'",
-       ([book_data['name_n'], book_data['link_n'], date_n, 'disp']))
+    await c.execute("UPDATE books SET name = ?, link = ?, date = ?, status = ?, wiki = ? WHERE status = 'is_being_created'",
+       ([book_data['name_n'], book_data['link_n'], date_n, 'disp', book_data['wiki_n']]))
     await conn.commit()
     await conn.close()
     await message.answer("Книга добавлена!")
