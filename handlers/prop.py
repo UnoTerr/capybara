@@ -15,7 +15,7 @@ async def prop_cmd(message: types.Message):
 #    await bot.send_message('234397521', msg) 
     conn = await aiosqlite.connect('prop.db')
     c = await conn.cursor()
-    await c.execute(("INSERT INTO prop (name) VALUES {}").format(msg))
+    await c.execute(("INSERT INTO prop (name) VALUES ({})").format(msg))
     await conn.commit()
     await conn.close()
     await bot.send_message(chatId, 'Спасибо за ваше предложение!') 
