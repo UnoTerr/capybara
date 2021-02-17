@@ -41,11 +41,15 @@ async def cmd_time(message: types.Message):
     d0 = today.strftime("%d.%m.%Y")
     d1 = datetime.strptime(d0, '%d.%m.%Y')
     conn = await aiosqlite.connect('mybd.db')
-    async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
+    async with conn.execute("SELECT id, date, name, link FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
         async for i in cursor:
             d2 = datetime.strptime(i[1], '%d.%m.%Y')
             dif = abs((d2 - d1).days)
-            msg = """До окончания прочтения книги '<b>{}</b>' осталось {} дней""".format(i[2], dif)
+            msg = """До окончания прочтения книги '<b>{}</b>' осталось {} дней\n
+            ------
+            <b>Книга:</b> {}
+            <b>Ссылка:</b> {}
+            <b>Дата:</b> {}""".format(i[2], dif, i[2], i[3], d2)
 #            await bot.send_message(chatId, msg, parse_mode='HTML')
             await message.answer(msg, parse_mode='HTML')  
     await conn.commit()
