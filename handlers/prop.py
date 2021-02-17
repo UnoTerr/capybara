@@ -11,7 +11,7 @@ import asyncio
 @dp.message_handler(Text(startswith='Предложить книгу', ignore_case=True))
 async def prop_cmd(message: types.Message):
     chatId = message.chat.id
-    msg = message.text.split(' ', 2)[2]
+    msg = str(message.text.split(' ', 2)[2])
 #    await bot.send_message('234397521', msg) 
     conn = await aiosqlite.connect('prop.db')
     c = await conn.cursor()
