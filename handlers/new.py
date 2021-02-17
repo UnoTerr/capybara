@@ -38,7 +38,7 @@ async def new_book_3(message: types.Message, state: FSMContext):
 async def new_book_3(message: types.Message, state: FSMContext):
     await state.update_data(wiki_n = message.text)
     await New.next()
-    await message.answer("Говори дату в формате ДД.ММ.ГГГГ: ")
+    await message.answer("Говори дату в формате ДД.ММ.ГГГГ ЧЧ:ММ:СС")
 
 @dp.message_handler(state = New.book_date, content_types=types.ContentTypes.TEXT, is_chat_admin=True)
 async def new_book_4(message: types.Message, state: FSMContext):
