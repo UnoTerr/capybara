@@ -14,7 +14,7 @@ async def cmd_wiki(message: types.Message):
         msg = 'Данная страница не была найдена 😔'
     await message.reply(msg)
 
-@dp.message_handler(Text(startswith='/666'), is_chat_admin=True)
+@dp.message_handler(Text(startswith='666'), is_chat_admin=True)
 async def cmd_speak(message: types.Message):
     chatId_ = message.chat.id
     txt = message.text.split(' ', 1)[1]
