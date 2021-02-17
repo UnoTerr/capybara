@@ -20,6 +20,6 @@ async def cmd_speak(message: types.Message):
     txt = message.text.split(' ', 1)[1]
     print(txt)
     if chatId_ == '385281052':
-        await bot.send_message(chatId, txt)
+        await bot.send_message("-1001161219382", txt)
 
 
