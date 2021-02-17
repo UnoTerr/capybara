@@ -7,10 +7,7 @@ from conf import dp, bot
 @dp.message_handler(Text(startswith='Найти на вики', ignore_case=True))
 async def cmd_wiki(message: types.Message):
     txt = message.text.split(' ', 3)[3]
-    print(txt)
-    await message.reply("Ты чо охуел сам ищи")
-
-    # wikipedia.set_lang("ru")
-    # msg = wikipedia.summary(txt, sentences=3)
-    # print(msg)
-    # await message.reply(msg)
+    wikipedia.set_lang("ru")
+    msg = wikipedia.summary(txt, sentences=3)
+    print(msg)
+    await message.reply(msg)
