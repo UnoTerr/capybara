@@ -42,3 +42,15 @@ async def prop_clear(message: types.Message):
     await message.answer('Предложка очищена') 
     await conn.commit()
     await conn.close()
+
+@dp.message_handler(Text(equals='Начать голосование', ignore_case=True), is_chat_admin=True)
+async def prop_poll(message: types.Message):
+    chatId = message.chat.id
+    books = []
+    conn = await aiosqlite.connect('prop.db')
+    async with conn.execute("SELECT id, name FROM prop") as cursor:
+        async for i in cursor:
+            books.append(i[1])
+    await conn.commit()
+    await conn.close()
+    await bot.send_poll(chatId, "Голосование:", books, False)
