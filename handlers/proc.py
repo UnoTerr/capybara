@@ -36,7 +36,7 @@ async def callback_delete(query: types.CallbackQuery, callback_data: dict):
 @dp.message_handler(Text(equals="оставшееся время", ignore_case=True))
 async def cmd_time(message: types.Message):
     chatId1 = message.chat.id
-    if chatId == chatId1:
+    if chatId1 == chatId:
         today = datetime.today()
         d0 = today.strftime("%d.%m.%Y")
         d1 = datetime.strptime(d0, '%d.%m.%Y')
