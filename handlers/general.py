@@ -4,9 +4,14 @@ from aiogram.dispatcher.filters import Text
 import aiosqlite
 from conf import dp, bot
 
+new_kb = types.ReplyKeyboardMarkup(row_width=3)
+new_kb.row(types.KeyboardButton("Оставшееся время"),
+                         types.KeyboardButton("Посмотреть предложку"),
+                         types.KeyboardButton("Покажи книги"))
+
 @dp.message_handler(is_chat_admin=True, commands=["start"])
 async def cmd_start(message: types.Message):
-    await message.reply("Привет! Я - Капабара!")
+    await message.reply("Привет! Я - Капабара!", reply_markup=new_kb)
 
 # @dp.message_handler(is_chat_admin=True)
 # async def echo(message: types.Message):
@@ -46,4 +51,4 @@ async def greeting_messages(message: types.Message):
         <b>3. Посмотреть предложку</b>
         <b>4. Покажи книги</b>  (все книги, которые мы читали)
         <b>5. Найти на вики *Название*</b>""".format(user)
-    await bot.send_message(message.chat.id, msg, parse_mode='HTML')
+    await bot.send_message(message.chat.id, msg, parse_mode='HTML', reply_markup=new_kb)
