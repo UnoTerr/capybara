@@ -10,7 +10,7 @@ from datetime import datetime
 
 cb_del = CallbackData('del', 'action', 'id')
 
-@dp.message_handler(Text(equals="покажи книги", ignore_case=True))
+@dp.message_handler(Text(equals="Покажи книги", ignore_case=True))
 async def cmd_cancel(message: types.Message):
     conn = await aiosqlite.connect('mybd.db')
     async with conn.execute("SELECT id, name, link, date FROM books WHERE status = 'disp'") as cursor:
@@ -33,20 +33,23 @@ async def callback_delete(query: types.CallbackQuery, callback_data: dict):
        await conn.commit()
        await conn.close()
 
-@dp.message_handler(Text(equals="оставшееся время", ignore_case=True))
+@dp.message_handler(Text(equals="Оставшееся время", ignore_case=True))
 async def cmd_time(message: types.Message):
-    chatId1 = message.chat.id
-    if chatId1 == chatId:
-        today = datetime.today()
-        d0 = today.strftime("%d.%m.%Y")
-        d1 = datetime.strptime(d0, '%d.%m.%Y')
-        conn = await aiosqlite.connect('mybd.db')
-        async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp'") as cursor:
-            async for i in cursor:
-                d2 = datetime.strptime(i[1], '%d.%m.%Y')
-                dif = abs((d2 - d1).days)
-                msg = """До окончания прочтения книги '<b>{}</b>' осталось {} дней""".format(i[2], dif)
-                await bot.send_message(chatId, msg, parse_mode='HTML')
+#    chatId1 = message.chat.id
+#    if chatId1 == chatId:
+    today = datetime.today()
+    d0 = today.strftime("%d.%m.%Y")
+    d1 = datetime.strptime(d0, '%d.%m.%Y')
+    conn = await aiosqlite.connect('mybd.db')
+    async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp'") as cursor:
+        async for i in cursor:
+            d2 = datetime.strptime(i[1], '%d.%m.%Y')
+            dif = abs((d2 - d1).days)
+            msg = """До окончания прочтения книги '<b>{}</b>' осталось {} дней""".format(i[2], dif)
+#            await bot.send_message(chatId, msg, parse_mode='HTML')
+            await message.answer(msg, parse_mode='HTML')  
+    await conn.commit()
+    await conn.close()        
 
 async def alert():
     today = datetime.today()
