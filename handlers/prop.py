@@ -11,11 +11,11 @@ import asyncio
 @dp.message_handler(Text(startswith='Предложить книгу', ignore_case=True))
 async def prop_cmd(message: types.Message):
     chatId = message.chat.id
-    msg = str(message.text.split(' ', 2)[2])
+    msg = message.text.split(' ', 2)[2]
 #    await bot.send_message('234397521', msg) 
     conn = await aiosqlite.connect('prop.db')
     c = await conn.cursor()
-    await c.execute("INSERT INTO prop (name) VALUES (?)", msg)
+    await c.execute("INSERT INTO prop (name) VALUES (?)", (msg,))
     await conn.commit()
     await conn.close()
     await bot.send_message(chatId, 'Спасибо за ваше предложение!') 
