@@ -38,7 +38,7 @@ async def prop_show(message: types.Message):
 async def prop_clear(message: types.Message):
     conn = await aiosqlite.connect('prop.db')
     c = await conn.cursor()
-    await c.execute("DELETE FROM books ")
+    await c.execute("DELETE FROM prop")
     await message.answer('Предложка очищена') 
     await conn.commit()
     await conn.close()
