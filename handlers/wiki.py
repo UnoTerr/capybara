@@ -8,7 +8,9 @@ from aiogram.dispatcher.filters import Text
 async def wiki(message: types.Message):
     txt = message.text.split(' ', 3)[3]
     print(txt)
-    wikipedia.set_lang("ru")
-    msg = wikipedia.summary(txt, sentences=3)
-    print(msg)
-    await message.reply(msg)
+    await message.reply("Ты чо охуел сам ищи")
+
+    # wikipedia.set_lang("ru")
+    # msg = wikipedia.summary(txt, sentences=3)
+    # print(msg)
+    # await message.reply(msg)
