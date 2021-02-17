@@ -37,6 +37,7 @@ async def prop_start(message: types.Message):
 
 @dp.message_handler(content_types=["new_chat_members"])
 async def greeting_messages(message: types.Message):
+    user = message.new_chat_members[0].first_name
     msg = """<b>🤚Дорогой {}, добро пожаловать в книжный клуб/бар "У капибар"!🤚
         Доступные команды для юзеров:
         ————————
