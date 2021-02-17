@@ -8,6 +8,8 @@ from conf import dp, bot
 async def cmd_wiki(message: types.Message):
     txt = message.text.split(' ', 3)[3]
     wikipedia.set_lang("ru")
-    msg = wikipedia.summary(txt, sentences=3)
-    print(msg)
+    try:
+        msg = wikipedia.summary(txt, sentences=3)
+    except wikipedia.exceptions.PageError:
+        msg = 'Данная страница не была найдена 😔'
     await message.reply(msg)
