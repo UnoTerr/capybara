@@ -63,7 +63,7 @@ async def alert():
     conn = await aiosqlite.connect('mybd.db')
     async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
         async for i in cursor:
-            d2 = datetime.strptime(i[1], '%d.%m.%Y')
+            d2 = datetime.strptime(str(i[1]), '%d.%m.%Y')
             dif = abs((d2 - d1).days)
             msg = "До окончания прочтения книги <b>{}</b> осталось {} дней".format(i[2], dif)
             if dif == 10 or dif == 5 or dif == 1:
