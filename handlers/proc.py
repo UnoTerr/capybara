@@ -58,7 +58,7 @@ async def cmd_time(message: types.Message):
 async def alert():
     today = datetime.today()
     d0 = today.strftime("%d.%m.%Y")
-    d1 = datetime.strptime(str(d0, '%d.%m.%Y'))
+    d1 = datetime.strptime(str(d0), '%d.%m.%Y')
 
     conn = await aiosqlite.connect('mybd.db')
     async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
