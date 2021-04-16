@@ -39,11 +39,11 @@ async def cmd_time(message: types.Message):
 #    if chatId1 == chatId:
     today = datetime.today()
     d0 = today.strftime("%d.%m.%Y")
-    d1 = datetime.strptime(d0, '%d.%m.%Y')
+    d1 = datetime.strptime(str(d0), '%d.%m.%Y')
     conn = await aiosqlite.connect('mybd.db')
     async with conn.execute("SELECT id, date, name, link FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
         async for i in cursor:
-            d2 = datetime.strptime(i[1], '%d.%m.%Y %H:%M:%S')
+            d2 = datetime.strptime(str(i[1]), '%d.%m.%Y %H:%M:%S')
             dif = abs((d2 - d1).days)
             msg = """До окончания прочтения книги '<b>{}</b>' осталось {} дней\n
             ------
@@ -64,7 +64,6 @@ async def alert():
     async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
         async for i in cursor:
             d2 = datetime.strptime(str(i[1]), '%d.%m.%Y')
-            print(d2)
             dif = abs((d2 - d1).days)
             msg = "До окончания прочтения книги <b>{}</b> осталось {} дней".format(i[2], dif)
             if dif == 10 or dif == 5 or dif == 1:
