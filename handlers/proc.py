@@ -64,7 +64,7 @@ async def alert():
     async with conn.execute("SELECT id, date, name FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
         async for i in cursor:
             d2 = datetime.strptime(str(i[1]), '%d.%m.%Y %H:%M:%S')
-            dif = abs((d2 - d1).days)
+            dif = (d2 - d1).days
             msg = "До окончания прочтения книги <b>{}</b> осталось {} дней".format(i[2], dif)
             if dif == 10 or dif == 5 or dif == 1:
                 await bot.send_message(chatId, msg, parse_mode='HTML')
