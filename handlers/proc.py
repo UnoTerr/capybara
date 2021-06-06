@@ -44,7 +44,7 @@ async def cmd_time(message: types.Message):
     async with conn.execute("SELECT id, date, name, link FROM books WHERE status = 'disp' ORDER BY id DESC LIMIT 1") as cursor:
         async for i in cursor:
             d2 = datetime.strptime(str(i[1]), '%d.%m.%Y %H:%M:%S')
-            dif = abs((d2 - d1).days)
+            dif = (d2 - d1).days
             msg = """До окончания прочтения книги '<b>{}</b>' осталось {} дней\n
             ------
             <b>Книга:</b> {}
