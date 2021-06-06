@@ -5,6 +5,7 @@ from aiogram.utils.callback_data import CallbackData
 import aiosqlite
 import asyncio
 from conf import dp, bot, chatId
+import aioschedule as schedule
 
 from datetime import datetime
 
@@ -53,7 +54,13 @@ async def cmd_time(message: types.Message):
 #            await bot.send_message(chatId, msg, parse_mode='HTML')
             await message.answer(msg, parse_mode='HTML')  
     await conn.commit()
-    await conn.close()        
+    await conn.close()   
+
+async def scheduler():
+	schedule.every().day.at('12:00').do(alert)
+	while True:
+		await schedule.run_pending()
+		await asyncio.sleep(1)     
 
 async def alert():
     today = datetime.today()
